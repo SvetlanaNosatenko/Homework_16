@@ -2,6 +2,8 @@ import json
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
+import data
+from data import *
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///base.db'
@@ -74,23 +76,17 @@ db.create_all()
 db.session.commit()
 
 
-with open("users.json", encoding='utf-8') as f:
-    users = json.load(f)
-for user in users:
+for user in data.users:
     db.session.add(Users(**user))
 db.session.commit()
 
 
-with open('orders.json', encoding='utf-8') as f:
-    orders = json.load(f)
-for order in orders:
+for order in data.orders:
     db.session.add(Order(**order))
 db.session.commit()
 
 
-with open('offers.json', encoding='utf-8') as f:
-    offers = json.load(f)
-for offer in offers:
+for offer in data.offers:
     db.session.add(Offers(**offer))
 db.session.commit()
 
