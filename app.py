@@ -1,4 +1,5 @@
 from class_funct import *
+from flask import request, jsonify, json
 
 
 @app.route('/users/', methods=['GET', 'POST'])
@@ -14,7 +15,7 @@ def all_users():
         return jsonify(result)
 
     elif request.method == 'POST':
-        data_user = json.load(request.get_json())
+        data_user = request.get_json()
         new_user = Users(
             first_name=data_user['first_name'],
             last_name=data_user['last_name'],
@@ -47,7 +48,7 @@ def one_users(uid: int):
         return jsonify(""), 204
 
     elif request.method == 'PUT':
-        data_user = json.load(request.get_json())
+        data_user = request.get_json()
         change_user = Users.query.get(uid)
         change_user.first_name = data_user['first_name']
         change_user.last_name = data_user['last_name']
@@ -73,7 +74,7 @@ def all_orders():
         return jsonify(result)
 
     elif request.method == 'POST':
-        data_order = json.load(request.get_json())
+        data_order = request.get_json()
         new_order = Order(
             name=data_order['name'],
             description=data_order['description'],
@@ -108,8 +109,8 @@ def one_order(uid: int):
         return jsonify(""), 204
 
     elif request.method == 'PUT':
-        data_order = json.load(request.get_json())
-        change_order = Users.query.get(uid)
+        data_order = request.get_json()
+        change_order = Order.query.get(uid)
         change_order.name = data_order['name']
         change_order.description = data_order['description']
         change_order.end_date = data_order['end_date']
@@ -135,9 +136,9 @@ def all_offers():
         return jsonify(result)
 
     elif request.method == 'POST':
-        data_offer = json.load(request.get_json())
+        data_offer = request.get_json()
         new_offer = Offers(
-            order_id=data_offer['order_id"'],
+            order_id=data_offer['order_id'],
             executor_id=data_offer['executor_id']
         )
         db.session.add(new_offer)
@@ -164,10 +165,10 @@ def one_offer(uid: int):
         return jsonify(""), 204
 
     elif request.method == 'PUT':
-        data_offer = json.load(request.get_json())
-        change_offer = Users.query.get(uid)
+        data_offer = request.get_json()
+        change_offer = Offers.query.get(uid)
         change_offer.order_id = data_offer['order_id']
-        change_offer.executor_id_id = data_offer['executor_id']
+        change_offer.executor_id = data_offer['executor_id']
         db.session.add(change_offer)
         db.session.commit()
         return jsonify(""), 204
